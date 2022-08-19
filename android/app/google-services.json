@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "616260197896",
+    "project_id": "testing-b41ff",
+    "storage_bucket": "testing-b41ff.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616260197896:android:39bb0f42da102e2e8c7bbd",
+        "android_client_info": {
+          "package_name": "com.nsassignment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616260197896-98mnl3ditnki9tog3qjl3dkv5h6eaa3r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW8tfkFZ_ghrFeC9hN-gYCIdMyhJS0Rlk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616260197896-98mnl3ditnki9tog3qjl3dkv5h6eaa3r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
