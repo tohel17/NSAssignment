@@ -24,4 +24,5 @@ const inputStyles = {
   paddingHorizontal: 10,
   marginVertical: 10,
   color: 'black',
+  fontSize: 16,
 };
