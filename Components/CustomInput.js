@@ -1,13 +1,20 @@
 import {View, TextInput} from 'react-native';
 import React from 'react';
 
-export function CustomInput({value, type, onChangeText, placeHolder}) {
+export function CustomInput({
+  value,
+  type,
+  onChangeText,
+  placeHolder,
+  customStyle,
+}) {
+  const style = [inputStyles, customStyle];
   const showPassword = type == 'password';
   return (
     <TextInput
       placeholder={placeHolder}
       placeholderTextColor={'grey'}
-      style={inputStyles}
+      style={style}
       value={value}
       secureTextEntry={showPassword}
       keyboardType={type !== 'password' ? type : 'default'}

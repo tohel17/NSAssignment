@@ -10,8 +10,6 @@ export function Header({text}) {
 }
 const HeadarContainer = {
   height: 50,
-  //backgroundColor: 'white',
-  //paddingVertical: 20,
   paddingHorizontal: 10,
   justifyContent: 'center',
 };

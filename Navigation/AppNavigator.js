@@ -12,7 +12,7 @@ import {RootNavigator} from './RootNavigator';
 
 const AppStack = () => {
   //once loaded will redirect to login or home
-  if (false) {
+  if (true) {
     return <LoginNavigator />;
   } else {
     return <RootNavigator />;
