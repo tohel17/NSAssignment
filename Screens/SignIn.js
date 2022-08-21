@@ -1,15 +1,38 @@
 import {View, Text} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CustomButton} from './../Components/CustomButton';
-import {Header} from './../Components/Header';
 import {CustomInput} from './../Components/CustomInput';
-import {TriggerNotification} from './../Utils/Notification';
 import {useToast} from 'react-native-toast-notifications';
+import {LoginContext} from '../Context/LoginContext';
+import {ValidateEmail} from './../Utils/Utils';
 
 export function SignIn({navigation}) {
   const [Email, setEmail] = useState('');
   const [password, setpassword] = useState('');
+  const {itsloggedIn, Userlogin} = useContext(LoginContext);
+  const toast = useToast();
+
+  const LoginHandler = async () => {
+    if (ValidateEmail(Email) && password !== '') {
+      const res = await Userlogin(Email, password);
+      toast.show(res.message, {
+        type: 'normal',
+        placement: 'top',
+        duration: 4000,
+        offset: 30,
+        animationType: 'slide-in',
+      });
+    } else if (!ValidateEmail(Email)) {
+      toast.show('Enter valid mail', {
+        type: 'normal',
+        placement: 'top',
+        duration: 4000,
+        offset: 30,
+        animationType: 'slide-in',
+      });
+    }
+  };
   return (
     <SafeAreaView style={safeAreaConatiner}>
       <View style={mainContainer}>
@@ -42,7 +65,7 @@ export function SignIn({navigation}) {
           </Text>
           <CustomButton
             text={'Sign in'}
-            onPress={() => {}}
+            onPress={LoginHandler}
             CustomStyle={Button}
           />
           <Text style={BottomText}>

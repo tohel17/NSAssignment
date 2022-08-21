@@ -1,16 +1,41 @@
 import {View, Text} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {CustomButton} from './../Components/CustomButton';
 import {Header} from './../Components/Header';
 import {CustomInput} from './../Components/CustomInput';
 import {TriggerNotification} from './../Utils/Notification';
 import {useToast} from 'react-native-toast-notifications';
+import {ValidateEmail} from './../Utils/Utils';
+import {LoginContext} from '../Context/LoginContext';
 
 export function SignUp({navigation}) {
   const [Email, setEmail] = useState('');
   const [password, setpassword] = useState('');
   const [ReEnterPassword, setReEnterPassword] = useState('');
+  const toast = useToast();
+  const {isloggedIn, signUp} = useContext(LoginContext);
+  const ButtonHandler = async () => {
+    if (ValidateEmail(Email) && password !== '') {
+      const response = await signUp(Email, password);
+      toast.show(response.message, {
+        type: 'normal',
+        placement: 'top',
+        duration: 4000,
+        offset: 30,
+        animationType: 'slide-in',
+      });
+    } else if (!ValidateEmail(Email)) {
+      toast.show('Enter valid mail', {
+        type: 'normal',
+        placement: 'top',
+        duration: 4000,
+        offset: 30,
+        animationType: 'slide-in',
+      });
+    }
+  };
+
   return (
     <SafeAreaView style={safeAreaConatiner}>
       <View style={mainContainer}>
@@ -47,7 +72,7 @@ export function SignUp({navigation}) {
 
           <CustomButton
             text={'Sign Up'}
-            onPress={() => {}}
+            onPress={ButtonHandler}
             CustomStyle={Button}
           />
           <Text style={BottomText}>

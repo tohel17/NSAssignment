@@ -4,15 +4,16 @@
  * Generally speaking, it will contain an auth flow (registration, login, forgot password)
  * and a "main" flow which the user will use once logged in.
  */
-import React, {useEffect} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {navigationRef, useBackButtonHandler} from './navigation-utilities';
 import {LoginNavigator} from './LoginNavigator';
 import {RootNavigator} from './RootNavigator';
+import {LoginProvider} from './../Context/LoginContext';
+import {LoginContext} from '../Context/LoginContext';
 
 const AppStack = () => {
-  //once loaded will redirect to login or home
-  if (true) {
+  const {isloggedIn} = useContext(LoginContext);
+  if (!isloggedIn) {
     return <LoginNavigator />;
   } else {
     return <RootNavigator />;
@@ -21,8 +22,10 @@ const AppStack = () => {
 
 export const AppNavigator = () => {
   return (
-    <NavigationContainer>
-      <AppStack />
-    </NavigationContainer>
+    <LoginProvider>
+      <NavigationContainer>
+        <AppStack />
+      </NavigationContainer>
+    </LoginProvider>
   );
 };

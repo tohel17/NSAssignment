@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   textItem: {
     flex: 1,
     fontSize: 16,
+    color: 'grey',
   },
   placeholderStyle: {
     fontSize: 16,
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
   selectedTextStyle: {
     fontSize: 16,
     backgroundColor: 'white',
+    color: 'grey',
   },
   iconStyle: {
     width: 20,
