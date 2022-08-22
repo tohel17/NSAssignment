@@ -2,7 +2,7 @@ import {View, Text} from 'react-native';
 import React, {createContext, useState} from 'react';
 import auth from '@react-native-firebase/auth';
 import {firebase} from '@react-native-firebase/database';
-
+import {config} from './../Environment';
 export const LoginContext = createContext();
 
 export function LoginProvider({children}) {
@@ -67,9 +67,7 @@ export function LoginProvider({children}) {
     try {
       const reference = await firebase
         .app()
-        .database(
-          'https://testing-b41ff-default-rtdb.asia-southeast1.firebasedatabase.app/',
-        )
+        .database(config.fireBaseDB)
         .ref('/Main')
         .update({
           Text: text,

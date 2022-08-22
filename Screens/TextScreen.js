@@ -7,6 +7,7 @@ import {CustomButton} from './../Components/CustomButton';
 import {firebase} from '@react-native-firebase/database';
 import {LoginContext} from '../Context/LoginContext';
 import {useToast} from 'react-native-toast-notifications';
+import {config} from './../Environment';
 
 export function TextScreen() {
   const [input, setinput] = useState('');
@@ -38,9 +39,7 @@ export function TextScreen() {
   useEffect(() => {
     const onValueChange = firebase
       .app()
-      .database(
-        'https://testing-b41ff-default-rtdb.asia-southeast1.firebasedatabase.app/',
-      )
+      .database(config.fireBaseDB)
       .ref(`/Main/Text`)
       .on('value', snapshot => {
         setUpdatedText(snapshot.val());
