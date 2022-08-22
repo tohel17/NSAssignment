@@ -8,6 +8,7 @@ import {TriggerNotification} from './../Utils/Notification';
 import {useToast} from 'react-native-toast-notifications';
 import {ValidateEmail} from './../Utils/Utils';
 import {LoginContext} from '../Context/LoginContext';
+import {BarPasswordStrengthDisplay} from 'react-native-password-strength-meter';
 
 export function SignUp({navigation}) {
   const [Email, setEmail] = useState('');
@@ -17,19 +18,37 @@ export function SignUp({navigation}) {
   const toast = useToast();
   const {signUp} = useContext(LoginContext);
   const ButtonHandler = async () => {
-    if (ValidateEmail(Email) && password !== '') {
-      setisLoading(true);
-      const response = await signUp(Email, password);
-      toast.show(response.message, {
-        type: 'normal',
-        placement: 'top',
-        duration: 4000,
-        offset: 30,
-        animationType: 'slide-in',
-      });
-      setisLoading(false);
-    } else if (!ValidateEmail(Email)) {
-      toast.show('Enter valid mail', {
+    if (password === ReEnterPassword) {
+      if (ValidateEmail(Email) && password.length >= 5) {
+        setisLoading(true);
+        const response = await signUp(Email, password);
+        toast.show(response.message, {
+          type: 'normal',
+          placement: 'top',
+          duration: 4000,
+          offset: 30,
+          animationType: 'slide-in',
+        });
+        setisLoading(false);
+      } else if (!ValidateEmail(Email)) {
+        toast.show('Enter valid mail', {
+          type: 'normal',
+          placement: 'top',
+          duration: 4000,
+          offset: 30,
+          animationType: 'slide-in',
+        });
+      } else if (password.length < 5) {
+        toast.show('Password length should be greater than 5 charcaters.', {
+          type: 'normal',
+          placement: 'top',
+          duration: 4000,
+          offset: 30,
+          animationType: 'slide-in',
+        });
+      }
+    } else {
+      toast.show('Password does nat match', {
         type: 'normal',
         placement: 'top',
         duration: 4000,
@@ -44,7 +63,6 @@ export function SignUp({navigation}) {
       <View style={mainContainer}>
         <View style={Card}>
           <Text style={header}>Register</Text>
-
           <CustomInput
             type="default"
             value={Email}
@@ -72,7 +90,11 @@ export function SignUp({navigation}) {
             placeHolder="Re-enter password"
             customStyle={inputStyle}
           />
-
+          <BarPasswordStrengthDisplay
+            password={ReEnterPassword}
+            minLength={3}
+            width={250}
+          />
           <CustomButton
             text={'Sign Up'}
             onPress={ButtonHandler}
