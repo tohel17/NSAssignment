@@ -1,4 +1,4 @@
-import {View, Image, ScrollView, Text} from 'react-native';
+import {View, Image, ScrollView, Text, ActivityIndicator} from 'react-native';
 import React, {useState, useContext, useEffect} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {Header} from './../Components/Header';
@@ -13,6 +13,7 @@ export function ImageScreen() {
   const [image, setImage] = useState(null);
   const {uploadImage} = useContext(LoginContext);
   const [IsImageUpdated, setIsImageUpdated] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const toast = useToast();
 
   const selectImage = async type => {
@@ -35,8 +36,11 @@ export function ImageScreen() {
     }
     path = res.assets[0].uri;
     fileName = res.assets[0].fileName;
+    setisLoading(true);
     const result = await uploadImage(path, fileName);
     setIsImageUpdated(true);
+    setisLoading(false);
+
     toast.show(result.message, {
       type: 'normal',
       placement: 'top',
@@ -47,12 +51,14 @@ export function ImageScreen() {
   };
 
   const getImage = async () => {
+    setisLoading(true);
     const url = await storage()
       .ref('/' + 'Images')
       .getDownloadURL();
     if (url) {
       setImage(url);
     }
+    setisLoading(false);
     setIsImageUpdated(false);
   };
   useEffect(() => {
@@ -64,12 +70,20 @@ export function ImageScreen() {
       <View style={mainContainer}>
         <Header text="Image Screen" />
         <ScrollView style={ImageContainer}>
-          <Text style={textstyle}>Uploaded Image</Text>
-          {image && (
-            <Image
-              source={{uri: image}}
-              style={{height: 300, width: '100%', resizeMode: 'contain'}}
-            />
+          <Text style={textstyle}>
+            {isLoading ? 'Uploading Image...' : 'Uploaded Image'}
+          </Text>
+          {isLoading ? (
+            <ActivityIndicator size="small" color={'#ff3e6c'} />
+          ) : (
+            <>
+              {image && (
+                <Image
+                  source={{uri: image}}
+                  style={{height: 300, width: undefined}}
+                />
+              )}
+            </>
           )}
         </ScrollView>
         <View style={buttonContainer}>
