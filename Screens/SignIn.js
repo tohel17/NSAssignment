@@ -10,11 +10,13 @@ import {ValidateEmail} from './../Utils/Utils';
 export function SignIn({navigation}) {
   const [Email, setEmail] = useState('');
   const [password, setpassword] = useState('');
+  const [isLoading, setisLoading] = useState(false);
   const {itsloggedIn, Userlogin} = useContext(LoginContext);
   const toast = useToast();
 
   const LoginHandler = async () => {
     if (ValidateEmail(Email) && password !== '') {
+      setisLoading(true);
       const res = await Userlogin(Email, password);
       toast.show(res.message, {
         type: 'normal',
@@ -23,6 +25,7 @@ export function SignIn({navigation}) {
         offset: 30,
         animationType: 'slide-in',
       });
+      setisLoading(false);
     } else if (!ValidateEmail(Email)) {
       toast.show('Enter valid mail', {
         type: 'normal',
@@ -67,6 +70,7 @@ export function SignIn({navigation}) {
             text={'Sign in'}
             onPress={LoginHandler}
             CustomStyle={Button}
+            isloading={isLoading}
           />
           <Text style={BottomText}>
             Don't have an account?

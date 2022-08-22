@@ -19,6 +19,7 @@ export function Calculator() {
   const [Operation, setOperation] = useState('Addition');
   const [output, setOutput] = useState('');
   const toast = useToast();
+  const [isLoading, setisLoading] = useState(false);
 
   const handleOnClick = async () => {
     if (firstNum === '' && secondNum === '') {
@@ -30,6 +31,7 @@ export function Calculator() {
         animationType: 'slide-in',
       });
     } else {
+      setisLoading(true);
       let result = await calculate(firstNum, secondNum, Operation);
       result = JSON.parse(result);
 
@@ -44,6 +46,7 @@ export function Calculator() {
           animationType: 'slide-in',
         });
       }
+      setisLoading(false);
     }
   };
   return (
@@ -74,7 +77,11 @@ export function Calculator() {
               setOperation(data);
             }}
           />
-          <CustomButton text={`Perfrom ${Operation}`} onPress={handleOnClick} />
+          <CustomButton
+            text={`Perfrom ${Operation}`}
+            onPress={handleOnClick}
+            isloading={isLoading}
+          />
           {output !== '' && <Text style={textField}>Result: {output}</Text>}
         </View>
       </View>

@@ -8,7 +8,7 @@ import storage from '@react-native-firebase/storage';
 import {utils} from '@react-native-firebase/app';
 
 export function LoginProvider({children}) {
-  const [isloggedIn, setisloggedIn] = useState(true);
+  const [isloggedIn, setisloggedIn] = useState(false);
 
   const signUp = async (email, password) => {
     try {

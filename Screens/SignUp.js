@@ -13,10 +13,12 @@ export function SignUp({navigation}) {
   const [Email, setEmail] = useState('');
   const [password, setpassword] = useState('');
   const [ReEnterPassword, setReEnterPassword] = useState('');
+  const [isLoading, setisLoading] = useState(false);
   const toast = useToast();
-  const {isloggedIn, signUp} = useContext(LoginContext);
+  const {signUp} = useContext(LoginContext);
   const ButtonHandler = async () => {
     if (ValidateEmail(Email) && password !== '') {
+      setisLoading(true);
       const response = await signUp(Email, password);
       toast.show(response.message, {
         type: 'normal',
@@ -25,6 +27,7 @@ export function SignUp({navigation}) {
         offset: 30,
         animationType: 'slide-in',
       });
+      setisLoading(false);
     } else if (!ValidateEmail(Email)) {
       toast.show('Enter valid mail', {
         type: 'normal',
@@ -74,6 +77,7 @@ export function SignUp({navigation}) {
             text={'Sign Up'}
             onPress={ButtonHandler}
             CustomStyle={Button}
+            isLoading={isLoading}
           />
           <Text style={BottomText}>
             Alreay have an account?
@@ -82,7 +86,6 @@ export function SignUp({navigation}) {
               onPress={() => {
                 navigation.navigate('signIn');
               }}>
-              {' '}
               Sign in
             </Text>
           </Text>
