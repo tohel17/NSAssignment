@@ -4,9 +4,11 @@ import auth from '@react-native-firebase/auth';
 import {firebase} from '@react-native-firebase/database';
 import {config} from './../Environment';
 export const LoginContext = createContext();
+import storage from '@react-native-firebase/storage';
+import {utils} from '@react-native-firebase/app';
 
 export function LoginProvider({children}) {
-  const [isloggedIn, setisloggedIn] = useState(false);
+  const [isloggedIn, setisloggedIn] = useState(true);
 
   const signUp = async (email, password) => {
     try {
@@ -84,8 +86,34 @@ export function LoginProvider({children}) {
       };
     }
   };
+
+  const uploadImage = async (path, fileName) => {
+    try {
+      //const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/Images.png`;
+      let reference = storage().ref('Images'); //to upload multiple images replace 'images' with file name
+      let task = await reference.putFile(path);
+      if ((task.state = 'success')) {
+        return {
+          result: true,
+          message: 'Successfully uploaded the photo.',
+        };
+      } else {
+        return {
+          result: false,
+          message: 'Something went wrong please try again later',
+        };
+      }
+    } catch (err) {
+      console.log(err);
+      return {
+        result: false,
+        message: 'Something went wrong please try again later',
+      };
+    }
+  };
   return (
-    <LoginContext.Provider value={{isloggedIn, signUp, Userlogin, UploadText}}>
+    <LoginContext.Provider
+      value={{isloggedIn, signUp, Userlogin, UploadText, uploadImage}}>
       {children}
     </LoginContext.Provider>
   );
