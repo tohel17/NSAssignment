@@ -5,7 +5,7 @@ export const TriggerNotification = async title => {
     let content = {
       message: title,
       vibrate: true,
-      vibration: 300,
+      vibration: 400,
       playSound: true,
       channelId: 'com.nsassignment.pushnotifications',
       soundName: 'default',

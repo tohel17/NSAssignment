@@ -8,12 +8,17 @@ import storage from '@react-native-firebase/storage';
 import {utils} from '@react-native-firebase/app';
 
 export function LoginProvider({children}) {
-  const [isloggedIn, setisloggedIn] = useState(false);
+  const [isloggedIn, setisloggedIn] = useState(true);
+  const [userid, setuserid] = useState();
 
   const signUp = async (email, password) => {
     try {
       const res = await auth().createUserWithEmailAndPassword(email, password);
       setisloggedIn(true);
+      const user = auth().currentUser;
+      if (user) {
+        setuserid(user.uid);
+      }
       return {
         result: true,
         message: 'Succesfully created an account',
@@ -42,7 +47,10 @@ export function LoginProvider({children}) {
     try {
       const res = await auth().signInWithEmailAndPassword(email, password);
       setisloggedIn(true);
-      console.log('----', res);
+      const user = auth().currentUser;
+      if (user) {
+        setuserid(user.uid);
+      }
       return {
         result: true,
         message: 'Succesfully logged in',
@@ -70,7 +78,7 @@ export function LoginProvider({children}) {
       const reference = await firebase
         .app()
         .database(config.fireBaseDB)
-        .ref('/Main')
+        .ref(`/Main/${userid}`)
         .update({
           Text: text,
         });
@@ -90,7 +98,7 @@ export function LoginProvider({children}) {
   const uploadImage = async (path, fileName) => {
     try {
       //const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/Images.png`;
-      let reference = storage().ref('Images'); //to upload multiple images replace 'images' with file name
+      let reference = storage().ref(`${userid}/use`); //to upload multiple images replace 'images' with file name
       let task = await reference.putFile(path);
       if ((task.state = 'success')) {
         return {
@@ -113,7 +121,7 @@ export function LoginProvider({children}) {
   };
   return (
     <LoginContext.Provider
-      value={{isloggedIn, signUp, Userlogin, UploadText, uploadImage}}>
+      value={{isloggedIn, signUp, Userlogin, UploadText, uploadImage, userid}}>
       {children}
     </LoginContext.Provider>
   );

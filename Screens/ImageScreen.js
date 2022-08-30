@@ -7,11 +7,11 @@ import {CustomButton} from '../Components/CustomButton';
 import {LoginContext} from '../Context/LoginContext';
 import {useToast} from 'react-native-toast-notifications';
 import {utils} from '@react-native-firebase/app';
-import storage from '@react-native-firebase/storage';
+import storage, {listAll} from '@react-native-firebase/storage';
 
 export function ImageScreen() {
   const [image, setImage] = useState(null);
-  const {uploadImage} = useContext(LoginContext);
+  const {uploadImage, userid} = useContext(LoginContext);
   const [IsImageUpdated, setIsImageUpdated] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const toast = useToast();
@@ -53,8 +53,11 @@ export function ImageScreen() {
   const getImage = async () => {
     setisLoading(true);
     const url = await storage()
-      .ref('/' + 'Images')
+      .ref('/' + `${userid}/use`)
       .getDownloadURL();
+    // const urls = await storage().ref('/' + `${userid}/use`);
+    // const urrl = await listAll(urls);
+    // console.log('urr===========l', urrl);
     if (url) {
       setImage(url);
     }

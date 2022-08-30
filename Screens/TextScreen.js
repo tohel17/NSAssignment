@@ -11,7 +11,7 @@ import {config} from './../Environment';
 
 export function TextScreen() {
   const [input, setinput] = useState('');
-  const {UploadText} = useContext(LoginContext);
+  const {UploadText, userid} = useContext(LoginContext);
   const [UpdatedText, setUpdatedText] = useState('');
   const toast = useToast();
 
@@ -40,9 +40,9 @@ export function TextScreen() {
     const onValueChange = firebase
       .app()
       .database(config.fireBaseDB)
-      .ref(`/Main/Text`)
+      .ref(`/Main/${userid}`)
       .on('value', snapshot => {
-        setUpdatedText(snapshot.val());
+        if (snapshot.val()) setUpdatedText(snapshot.val().Text);
       });
   }, []);
 
